@@ -465,7 +465,7 @@ def update_tableandfig(animal_value, ecology_value, water_value, err, ols, pred_
         working_table['mean_ci_upper'] = predictions['mean_ci_upper']
         slope_intercept = model_results.params
         std_err = model_results.bse
-        equation = 'δ',html.Sup('18'),'O',html.Sub('w'),' = {:.3f}±{:.3f} * δ'.format(slope_intercept[1], std_err[1]),html.Sup('18'),'O',html.Sub('p'),' - {:.3f}±{:.3f}'.format(abs(slope_intercept[0]), std_err[0])
+        equation = 'δ',html.Sup('18'),'O',html.Sub('w'),' = {:.3f}±{:.3f} * δ'.format(slope_intercept.iloc[1], std_err.iloc[1]),html.Sup('18'),'O',html.Sub('p'),' - {:.3f}±{:.3f}'.format(abs(slope_intercept.iloc[0]), std_err.iloc[0])
         placeholder = predict_placeholder[1]
         disabled = False
         
@@ -481,25 +481,13 @@ def update_tableandfig(animal_value, ecology_value, water_value, err, ols, pred_
     dataset, column = create_data_table(working_table, water)
 
     if isinstance(prediction, float) or isinstance(prediction, int):
-        data_test = pd.DataFrame()
-        data_test['X'] = [0, prediction]
-        data_test = sm.add_constant(data_test['X'])
-        result = model.predict(model_results.params, data_test)
-        inv_xtx = model.normalized_cov_params
-        X_pred = data_test.to_numpy()
-        n_pred = data_test.shape[0]
-        var_err = np.zeros((n_pred,))
-        for i in range(n_pred):
-            tmp = X_pred[i,:]
-            pm = np.dot(np.dot(tmp, inv_xtx), np.transpose(tmp))
-            var_err[i] = model_results.scale * (1 + pm)
-        n = working_table.shape[0]
-        p = 1
-        qt = scipy.stats.t.ppf(0.975, df = n-p-1)
-        yb = result - qt * np.sqrt(var_err)
-        pred_err = result - yb
-        predicted_value = '{:.1f} ± {:.1f}'.format(result[1], pred_err[1])
-        predicted_point = [prediction, result[1], pred_err[1]]
+        dataForPrediction = np.array([[1, prediction]])
+        predict = model_results.get_prediction(dataForPrediction)
+        pred_summary = predict.summary_frame(alpha)
+        ypred = pred_summary['mean'][0]
+        yprederror = pred_summary['mean'][0]-pred_summary['obs_ci_lower'][0]
+        predicted_value = '{:.1f} ± {:.1f}'.format(ypred, yprederror)
+        predicted_point = [prediction, ypred, yprederror]
 
     else:
         predicted_value = ""
