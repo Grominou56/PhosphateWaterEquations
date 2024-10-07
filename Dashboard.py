@@ -13,7 +13,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import statsmodels.api as sm
 import numpy as np
-import scipy
+# import scipy
 
 path = os.getcwd()+"/datasheets"
 print(path)
@@ -89,12 +89,12 @@ def create_data_table(working_table, water):
          "id": "Taxon",
          "type": "text"
         },
-        {"name": "δ¹⁸Op (‰)",
+        {"name": "δ¹⁸Oₚ (‰)",
          "id": "d18Op",
          "type": "numeric",
          "format": {"specifier": ",.1f"}
         },
-        {"name": "δ¹⁸Ow (‰)",
+        {"name": "δ¹⁸Oᵥᵥ (‰)",
          "id": water,
          "type": "numeric",
          "format": {"specifier": ",.1f"}
@@ -355,7 +355,7 @@ graph = html.Div(children = [
         ])
 
 # =============================================================================
-# creating line of best fit and prediction section
+# creating line of best fit and prediction sections
 # =============================================================================
 
 bestfit = html.Div(children = [
