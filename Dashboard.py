@@ -89,6 +89,10 @@ def create_data_table(working_table, water):
          "id": "Taxon",
          "type": "text"
         },
+        {"name": "Family",
+         "id": "Family",
+         "type": "text"
+        },
         {"name": "δ¹⁸Oₚ (‰)",
          "id": "d18Op",
          "type": "numeric",
