@@ -322,7 +322,7 @@ datatable = html.Div(
                     'font-style': 'italic'
                     }
                 ],
-            style_cell={'font-family': 'sans-serif'},
+            style_cell={'fontSize': 12,'font-family': 'sans-serif'},
             style_header={'fontWeight': 'bold', 'font-style': 'normal'},
             style_data={'minWidth': '20px', 'width': 'auto', 'maxWidth': '500px'},
             page_size=1000,
